@@ -27,8 +27,6 @@ e. Moody's BAA-Fed Fund Spread : This data file contains the spread between BAA 
 
 f. Cleveland Financial Stress Index : This dataset is similarly a gauge of the financial stress in the US financial system, with a high score indicating significant stress, and a low score indicates a low-stress period. However, it needs to be takes with a degree of cautions, because as the authors note themselves, the calculation of this index contains errors. The link is here: [Cleveland Financial Stress Index](https://fred.stlouisfed.org/series/CFSI).
 
-
-
 In actually scraping and extracting the data, the SAS Software was used in order to prepare the data. SAS was necessary in order to deal with the sheer size of the DSF and FUNDA dataset would make it infeasable for direct analysis in the R Statistical Package.
 
 ### Calculating the DD and the PD with the Naive Method
