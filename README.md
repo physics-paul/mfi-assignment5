@@ -34,16 +34,23 @@ In actually scraping and extracting the data, the SAS Software was used in order
 The naive method calculates the distance to default (DD) as:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/colorimage.png">
+  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive.png">
 </p>
 
 where
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive2.png">
+  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive2.png">
 </p>
 
+Here,
 
+- E is the firm's market capitalization (equity) value
+- F is the firm's value of debt
+- T represents the time period of one year
+- The volatility of E represents the volatility of the firm's market capitalization over the past year.
+
+Now, from this we can calculate the probability of default as 
 
 
 This task sought to look at the CIK and filing date pair from the previous section to determine the cumulative abnormal return (CAR) and cumulative abnormal volume (CAV) for each CIK/filing date pair. The abnormal return (AR) is defined as the return in excess of the CAPM market return, regressed from -315 to -91 days from the event or filing date. The 'cumulative' part of the definition arises from summing the rolling window of abnormal returns around the event date. For instance, the three-day window consists of the day prior to the event date, the event date, and the day after the event date. The one-day, three-day, and five-day rolling window was calculated for both CAR and CAV.
