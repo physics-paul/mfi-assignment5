@@ -2,7 +2,7 @@ This project seeks to analyze the distance to default (DD) and probability of de
 
 In calculating the DD and PD, there are three main methods, with each method being more accurate and more complex. The three methods are the naive, the direct, and the iterative method, which will be explained in more detail.
 
-Thus, this task is divided into three parts: 
+Thus, this task is divided into six parts: 
 
 1. Downloading the Data
 2. Calculating the DD and PD with the Naive Method
@@ -14,20 +14,31 @@ Thus, this task is divided into three parts:
 ### 1. Downloading the Data
 
 There were a few main sources of data used for this project:
+  
+a. DSF : The daily stock returns and volume, along with shares outstanding, were obtained by analyzing the DSF SAS file which was obtained through the QCF server. This data file had company information in the form of the CUSIP number and was used to obtain the share price, the return from the previous year, number of shares, and the volatility of the firm's equity value.
 
-  a. 8-K Texts : This was downloaded from the SEC webside, and all 8-Ks starting from 1995 Q1 to 2018 Q4 was obtained, and each company was labeled by their unique CIK number. For each quarter, 100 random 8-K's were selected to analyze. This results in over 9500+ documents to analyze.
+b. FUNDA : This company-specific data information file contained information on the outstanding debt held by each company and the link between CUSIP and the CIK number. This was used with DSF in order to calculate the distance to default. 
   
-  b. DSF : The daily stock returns and volume, along with shares outstanding, were obtained by analyzing the DSF SAS file which was obtained through the QCF server. This data file had company information in the form of the CUSIP number.
+c. DAILYFED : This dataset contained the 3-month treasury bond yield, which was used as the risk-free interest rate, This risk-free rate was then used in methods 2 and 3 to calculate the distance to default.
   
-  c. FUNDA : This company-specific data information file contained the link between CUSIP and the CIK number, which was used to relate the 8-K texts to the DSF data file. This document was found as well through the QCF server.
-  
-  d. Bill McDonald's Word List : This data file assigned a positive and negative value to each word, and it was used to determine the overall tone in the rudimentary sentiment analysis.
-  
-In actually downloading the data, Python was used for the data extraction to grab the information from each URL, specifically using the 'requests' module. Since each of the 8-K's was in the form of an html script, the module 'Beautiful Soup' was used in order to parse through the html and only grab the body of the document.
+d. NBER Recession Data : This information regarding recessions contains two values: 0 to indicate an expansionary period, and 1 to indicate a recessionary period. The link is here: [NBER Recession Data](https://research.stlouisfed.org/fred2/series/USREC).
 
-The Python script can be seen in the GitHub pages as 'sentimentAnalysis.py'. It was put here because the code runs more smoothly to go ahead an perform the Sentiment Analysis in the next sections while downloading the data.
+e. Moody's BAA-Fed Fund Spread : This data file contains the spread between BAA Corporate Bond yields and the Fed Funds rate. When in a recessionary period, this spread tends to be high, because the BAA Corporate Bond yields are closely linked to the probability of default for firms in this same riskiness level. The link is here: [Moody's BAA-Fed Fund Spread](https://fred.stlouisfed.org/series/BAAFFM).
 
-### Event Studies
+f. Cleveland Financial Stress Index : This dataset is similarly a gauge of the financial stress in the US financial system, with a high score indicating significant stress, and a low score indicates a low-stress period. However, it needs to be takes with a degree of cautions, because as the authors note themselves, the calculation of this index contains errors. The link is here: [Cleveland Financial Stress Index](https://fred.stlouisfed.org/series/CFSI).
+
+In actually scraping and extracting the data, the SAS Software was used in order to prepare the data. SAS was necessary in order to deal with the sheer size of the DSF and FUNDA dataset would make it infeasable for direct analysis in the R Statistical Package.
+
+### Calculating the DD and the PD with the Naive Method
+
+The naive method calculates the distance to default (DD) as:
+
+<p align="center">
+  <img width="450" height="450" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationNaive.png">
+</p>
+
+
+
 
 This task sought to look at the CIK and filing date pair from the previous section to determine the cumulative abnormal return (CAR) and cumulative abnormal volume (CAV) for each CIK/filing date pair. The abnormal return (AR) is defined as the return in excess of the CAPM market return, regressed from -315 to -91 days from the event or filing date. The 'cumulative' part of the definition arises from summing the rolling window of abnormal returns around the event date. For instance, the three-day window consists of the day prior to the event date, the event date, and the day after the event date. The one-day, three-day, and five-day rolling window was calculated for both CAR and CAV.
 
