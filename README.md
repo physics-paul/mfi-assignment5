@@ -34,13 +34,13 @@ In actually scraping and extracting the data, the SAS Software was used in order
 The naive method calculates the distance to default (DD) as:
 
 <p align="center">
-  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive.png">
+  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc1.png">
 </p>
 
 where
 
 <p align="center">
-  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive2.png">
+  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc2.png">
 </p>
 
 Here,
@@ -48,10 +48,13 @@ Here,
 - E is the firm's market capitalization (equity) value
 - F is the firm's value of debt
 - T represents the time period of one year
-- The volatility of E represents the volatility of the firm's market capitalization over the past year.
+- <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
 
-Now, from this we can calculate the probability of default as 
+Now, from these calculations, and according to the Black-Sholes theory we can calculate the PD as 
 
+<p align="center">
+  <img height='100' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+</p>
 
 This task sought to look at the CIK and filing date pair from the previous section to determine the cumulative abnormal return (CAR) and cumulative abnormal volume (CAV) for each CIK/filing date pair. The abnormal return (AR) is defined as the return in excess of the CAPM market return, regressed from -315 to -91 days from the event or filing date. The 'cumulative' part of the definition arises from summing the rolling window of abnormal returns around the event date. For instance, the three-day window consists of the day prior to the event date, the event date, and the day after the event date. The one-day, three-day, and five-day rolling window was calculated for both CAR and CAV.
 
