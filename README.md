@@ -37,6 +37,12 @@ The naive method calculates the distance to default (DD) as:
   <img src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive.png">
 </p>
 
+where
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive2.png">
+</p>
+
 
 
 
