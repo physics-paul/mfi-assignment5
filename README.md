@@ -34,7 +34,7 @@ In actually scraping and extracting the data, the SAS Software was used in order
 The naive method calculates the distance to default (DD) as:
 
 <p align="center">
-  <img width="450" height="450" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive.png">
+  <img src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/calculationsNaive.png">
 </p>
 
 
