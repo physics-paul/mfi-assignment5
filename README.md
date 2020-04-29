@@ -34,13 +34,13 @@ In actually scraping and extracting the data, the SAS Software was used in order
 The naive method calculates the distance to default (DD) as:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc1.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc1.png">
 </p>
 
 where
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc2.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc2.png">
 </p>
 
 Here,
@@ -48,13 +48,13 @@ Here,
 - E is the firm's market capitalization (equity) value
 - F is the firm's value of debt
 - T represents the time period of one year
-- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
-- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc3.png"> represents the volatility of the firm's assets over the past year using the naive method.
+- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
+- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc3.png"> represents the volatility of the firm's assets over the past year using the naive method.
 
 Now, from these calculations, and according to the Black-Scholes theory we can calculate the PD as 
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 In order to calculate these values over the range from 1970-2015, 200 firms were randomly selected from each year. This was done in an effort to lower the computational strain while still capturing the essence of the calculations.
@@ -74,13 +74,13 @@ We can compute the descriptive statistics over the entire sample period for the 
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
@@ -90,31 +90,31 @@ The calculation was completed in the R Markdown file 'defaultCalculation.r' unde
 The direct method calculates the distance to default (DD) by treating the market capitalization E as an option on the firm's assets with strike price F, the company's debt. In the Black-Scholes theory, this equation is given by:
 
 <p align="center">
-  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc1.png">
+  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc1.png">
 </p>
 
 where
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc3.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc3.png">
 </p>
 
 and 
 
 <p align="center">
-  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc4.png">
+  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc4.png">
 </p>
 
 Here,
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc2.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc2.png">
 </p>
 
 is the cumulative normal distribution. Now, the volatility of the firm's market capitalization can be measured as a funciton of the volatilty in the firm's assets, and it is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc5.png">
 </p>
 
 At this point, we know:
@@ -122,12 +122,12 @@ At this point, we know:
 - E is the firm's market capitalization (equity) value
 - F is the firm's value of debt
 - T represents the time period of one year
-- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
+- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
 
-To highlight, we don't know V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png">, the volatility of the firm's assets. These two things we can directly solve for, because we have two equations and two unknowns. The distance of default, <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc7.png">, can then be calculated. Additionally, we can calculate the probability of default, which is simply the cumulative normal distribution integrated to an upper bound of the distance to default. Given before, this value is:
+To highlight, we don't know V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc6.png">, the volatility of the firm's assets. These two things we can directly solve for, because we have two equations and two unknowns. The distance of default, <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc7.png">, can then be calculated. Additionally, we can calculate the probability of default, which is simply the cumulative normal distribution integrated to an upper bound of the distance to default. Given before, this value is:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc2.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc2.png">
 </p>
 
 Using the same range of data as in the naive method, for the direct method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
@@ -145,13 +145,13 @@ Using the same range of data as in the naive method, for the direct method, we c
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
@@ -166,9 +166,9 @@ Both of the previous methods, the naive method and the direct method, calculate 
 
 - Third, estimate the volatility of these daily values of the firm's assets.
 
-- Repeat with the new value of the firm's volatility until <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png"> converges.
+- Repeat with the new value of the firm's volatility until <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc6.png"> converges.
 
-Thus, we can calculate V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png">, the volatility of the firm's assets, for every year for every firm sampled.
+Thus, we can calculate V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc6.png">, the volatility of the firm's assets, for every year for every firm sampled.
 
 Using the same range of data as in the naive and direct method, for the indirect method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
 
@@ -185,13 +185,13 @@ Using the same range of data as in the naive and direct method, for the indirect
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/4graph1.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/4graph2.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
@@ -208,7 +208,7 @@ At this point, we can compare all three methods, by looking at the correlation a
 Graphically, this correlation is represented by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/5graph1.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
 </p>
 
 ### Comparison with Financial Stress Indices
@@ -218,19 +218,19 @@ For the rest of this analsis, the distance to default will be calculated by the 
 When comparing the NBER Recession data with the calculation of the DD, the resulting plot yields:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph1.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph1.png">
 </p>
 
 Additionally, the plot of the Moody's BAA-Fed Fund Spread with the DD looks like:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph2.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph2.png">
 </p>
 
 Lastly, we can compare our calculations to the Cleveland Financial Stress Index, we obtain the result:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph3.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph3.png">
 </p>
 
 Interestingly, we see a strong correlation between the distance to default (DD), the probability of default (PD), and current economic conditions, confirming the expected result firms are more likely to default in difficult economic times.
