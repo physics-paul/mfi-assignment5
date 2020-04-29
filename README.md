@@ -49,6 +49,7 @@ Here,
 - F is the firm's value of debt
 - T represents the time period of one year
 - <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
+- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc3.png"> represents the volatility of the firm's assets over the past year using the naive method.
 
 Now, from these calculations, and according to the Black-Sholes theory we can calculate the PD as 
 
@@ -56,124 +57,174 @@ Now, from these calculations, and according to the Black-Sholes theory we can ca
   <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
 </p>
 
-This task sought to look at the CIK and filing date pair from the previous section to determine the cumulative abnormal return (CAR) and cumulative abnormal volume (CAV) for each CIK/filing date pair. The abnormal return (AR) is defined as the return in excess of the CAPM market return, regressed from -315 to -91 days from the event or filing date. The 'cumulative' part of the definition arises from summing the rolling window of abnormal returns around the event date. For instance, the three-day window consists of the day prior to the event date, the event date, and the day after the event date. The one-day, three-day, and five-day rolling window was calculated for both CAR and CAV.
+In order to calculate these values over the range from 1970-2015, 200 firms were randomly selected from each year. This was done in an effort to lower the computational strain while still capturing the essence of the calculations.
 
-We can define the CAV as the normalized trading volume, calibrated to -71 to -11 days before the event date and taken on a log scale. For clarification, suppose the range of -71 to -11 days was not quite a volatile range of trading, while the cumulative three-day rolling window around the event date was very volatile, then the CAV would be a large number, scaled by a standard deviation or more from the mean of the past -71 to -11 day rolling window.
+We can compute the descriptive statistics over the entire sample period for the DD and PD given by:
 
-The table below shows the descriptive statistics for the CAR and CAV rolling windows over the sample period 1995:2018.
+| --- | Distance to Default (DD) | Probability of Default (PD) | 
+| Number of Observations	| 0.10961 |	0.12776 |
+| Mean	| 0.10961 |	0.12776 |
+| 25th Percentile	| 0.10961 |	0.12776 |
+| 50th Percentile	| 0.10961 |	0.12776 |
+| 75th Percentile	| 0.10961 |	0.12776 |
+| Standard Deviation	| 0.10961 |	0.12776 |
+| Minimum	| 0.10961 |	0.12776 |
+| Maximum	| 0.10961 |	0.12776 |
 
-| --- | CAR(1)  | CAR(3) | CAR(5) | CAV(1) | CAV(3) | CAV (5) |
-| Mean | -0.001508 |	-0.002782	| -0.003579 |	0.526526	| 1.206844	| 1.863234 | 
-|Standard Deviation	|0.061269 |	0.096360 |	0.124626 |	1.513595 |	3.473083 |	6.329492 |
-| Minimum |	-0.732448 |	-0.807893	| -0.934338 |	-8.344340	| -19.990874	| -27.465825 |
-|25%	|-0.018018 |	-0.029812	| -0.043501	| -0.423825	| -1.007499 | -2.104361 |
-|50%	|-0.000766 |	-0.001695	| -0.002122	| 0.387644	| 0.844627 |	1.365758 |
-|75%	|0.014817	| 0.024814 |	0.035890 |	1.236411	| 2.974241	| 5.078070 |
-| Maximum |	1.105913 | 1.936429 |	1.787982 |	12.774111 |	23.541118	| 42.558456|
-
-Additionally we can plot the distribution of both measures, given first by the cumulative abnormal return (CAR):
-
-<p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part2car.png">
-</p>
-
-Notice what this might be saying: from 1995-2018, the CAR trends slightly upward and is definitely non-zero, meaning the returns experienced over the event date are slightly different than what the CAPM model would suggest. However, considering the mean is roughly zero, this indicates the CAPM does a fairly good job at predicting returns.
-
-For the cumulative abnormal volume, the distribution is given by:
+Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part2cav.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
 </p>
 
-Notice here one interesting tidbit, is the CAV has a slight trend upwards, possibly indicating the volatility in the future is greater than the past would predict.
-
-This Python script can be seen in the GitHub pages as 'eventStudies.py'. Be cautioned though, this code takes around ~1hr to run, because of the intensive process in calculating the CAV and CAR for each event study. 
-
-This code produces the final 'sentimentAnalysisAndEventStudies.csv' data file to obtain all information for each event study.
-
-### Rudimentary Sentiment Analysis
-
-The main task for this section was to compute the abnormal stock returns and abnormal trading volume around 8-K filings, and study how these measure vary depending on the number of positive and negative words included in the filing.
-
-In obtaining the positivity and negativity of the document, these results can be sorted into quintiles. If we calculate the descriptive statistics for the CAR and CAV in the highest vs. lowest percentile, we obtain the following charts:
-
-CAR(0) plotted with the upper and lower quintiles:
+with the standard deviation given by:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part3car0.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
 </p>
 
-CAR(5) plotted with the upper and lower quintiles:
+The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
+
+### Calculating the DD and the PD with the Direct Method
+
+The direct method calculates the distance to default (DD) by treating the market capitalization E as an option on the firm's assets with strike price F, the company's debt. In the Black-Scholes theory, this equation is given by:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part3car5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc1.png">
 </p>
 
-CAV(0) plotted with the upper and lower qunitiles:
+where
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part3cav0.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc3.png">
 </p>
 
-CAV(5) plotted with the upper and lower quintiles:
+and 
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part3cav5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc4.png">
 </p>
 
-These results are very interesting! It seems the sentiment of the 8-K from this rudimentary analysis doesn't capture the overall effect of CAR and CAV, because it is hard to see any trend. The upper and lower quintiles seems to follow the same general pattern, except for a few exceptions or so. The one noticeable difference is in the CAR(0) upper quintile around 2001. This may simply be due to some noise, but it is remarkably higher in this time period. Could this be some effect due to the 'dot com' bubble burst of 2000? It is not clear, as an analysis of the more robust sentiment analysis could give more insight.
-
-This Python script can be seen in the GitHub pages as 'sentimentAnalysis.py', and is combined with the section below.
-
-### Advanced Sentiment Analysis
-
-In this section, a more thorough analysis of the 'tone' of the 8-K is performed by looking at the tonality of each sentence in the document, rather than merely counting positive and negative words. The natural language toolkit provided by the 'NLTK' module in Python was an excellent resource to complete this task.
-
-The first thing to notice in this section is difficult in cleaning up an html file. Even with the best tools, it can sill be an imprecise tool. However, how I went about this task was to clean the html string in a series of steps:
-
-1. Use the 'BeautifulSoup' module to remove all white spaces in the document and only extract the body of the html file.
-2. Use the 'RegexpTokenAnalyzer' function in the NLTK toolkit to grab only words and words which ended with a standard sentence ending (.!?).
-3. Use the 'sent_tokenize' function in the NLTK toolkit to split the string into sentences.
-4. Assign a tonality to each sentence by the ' ' function in the NLTK toolkit to analyze the tonality of each sentence.
-5. Sum up the overall tonality and divide by the total number of sentences to grab the offical 'tone' of the 8-K.
-
-After this, it was relatively easy to sort the 8-K documents into quintiles and generate the descriptive statistics for the upper and lower quintile. Specifically, when calculating the mean, the result is:
-
-CAR(0) plotted with the upper and lower quintiles:
+Here,
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part4car0.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc2.png">
 </p>
 
-CAR(5) plotted with the upper and lower quintiles:
+is the cumulative normal distribution. Now, the volatility of the firm's market capitalization can be measured as a funciton of the volatilty in the firm's assets, and it is given by:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part4car5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc5.png">
 </p>
 
-CAV(0) plotted with the upper and lower qunitiles:
+At this point, we know:
+
+- E is the firm's market capitalization (equity) value
+- F is the firm's value of debt
+- T represents the time period of one year
+- <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
+
+To highlight, we don't know V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png">, the volatility of the firm's assets. These two things we can directly solve for, because we have two equations and two unknowns. The distance of default, <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc7.png">, can then be calculated. Additionally, we can calculate the probability of default, which is simply the cumulative normal distribution integrated to an upper bound of the distance to default. Given before, this value is:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part4cav0.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc2.png">
 </p>
 
-CAV(5) plotted with the upper and lower quintiles:
+Using the same range of data as in the naive method, for the direct method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
+
+| --- | Distance to Default (DD) | Probability of Default (PD) | 
+| Number of Observations	| 0.10961 |	0.12776 |
+| Mean	| 0.10961 |	0.12776 |
+| 25th Percentile	| 0.10961 |	0.12776 |
+| 50th Percentile	| 0.10961 |	0.12776 |
+| 75th Percentile	| 0.10961 |	0.12776 |
+| Standard Deviation	| 0.10961 |	0.12776 |
+| Minimum	| 0.10961 |	0.12776 |
+| Maximum	| 0.10961 |	0.12776 |
+
+Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img width="400" height="300" src="https://raw.githubusercontent.com/physics-paul/mfi-assignment8/master/part4cav5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
 </p>
 
-The results seem a little underwhelming. By and large it seems the sentiment of the 8-K plays little role in actually generating abnormal returns, except for a few years. However, it is hard to tell which years these will be, as some years the lower quintile has a larger abnormal return, and some years the upper quintile has the larger abnormal return.
+with the standard deviation given by:
 
-Some descriptive statistics are given in the following table for the five-day rolling window:
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
+</p>
 
-| --- | CAR(5) Upper | CAR(5) Lower | CAV(5) Upper | CAV(5) Lower | 
-| Mean | 0.00460 |	-0.00407	| 1.6278 |	1.9775	| 
-|Standard Deviation	| 0.10961 |	0.12776 |	5.90024 | 6.9308 |
+The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
 
-This chart highlights what was seen in the plots above. There is a slight advantage to a more positive tone to the 8-K, by almost 1%. However, by looking at the time series data, it is hard to discern when this will happen. All which can be said is, on average, there is a slight advantage to a more positive tone in the 8-K. So talk positive!
+### Calculating the DD and the PD with the Indirect Method
 
-This Python script can be seen in the GitHub pages as 'sentimentAnalysis.py'. Be cautioned though, this code takes around ~1hr to run, due to the time-intensive process of analyzing each 8-K.
+Both of the previous methods, the naive method and the direct method, calculate the volatility by directly solving for it. This method takes a different approach: 
 
-This code produces the 'sentimentAnalysis.csv' data file, which is used by the 'eventStudies.py' script in order to obtain the final output.
+- First, guess a value for the volatility of the firm's assets for the previous year.
 
+- Second, using the equity option equation (and the guess of the volatility parameter), calculate the daily value of the firm's assets.
+
+- Third, estimate the volatility of these daily values of the firm's assets.
+
+- Repeat with the new value of the firm's volatility until <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png"> converges.
+
+Thus, we can calculate V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png">, the volatility of the firm's assets, for every year for every firm sampled.
+
+Using the same range of data as in the naive and direct method, for the indirect method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
+
+| --- | Distance to Default (DD) | Probability of Default (PD) | 
+| Number of Observations	| 0.10961 |	0.12776 |
+| Mean	| 0.10961 |	0.12776 |
+| 25th Percentile	| 0.10961 |	0.12776 |
+| 50th Percentile	| 0.10961 |	0.12776 |
+| 75th Percentile	| 0.10961 |	0.12776 |
+| Standard Deviation	| 0.10961 |	0.12776 |
+| Minimum	| 0.10961 |	0.12776 |
+| Maximum	| 0.10961 |	0.12776 |
+
+Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc7.png">
+</p>
+
+with the standard deviation given by:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc8.png">
+</p>
+
+The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
+
+### Comparison of the Methods
+
+At this point, we can compare all three methods, by looking at the correlation across the mean DD value throughout the years. This correlation for DD is given in the following table:
+
+| --- | Naive Method | Direct Method | Indirect Method |
+| Naive Method	| 0.10961 |	0.12776 | 1.000 |
+| Direct Method	| 0.10961 |	0.12776 |
+| Indirect Method	| 0.10961 |	0.12776 |
+
+### Comparison with Financial Stress Indices
+
+For the rest of this analsis, the distance to default will be calculated by the mean value for each year using the direct method. This DD will will be compared to financial stress indices.
+
+When comparing the NBER Recession data with the calculation of the DD, the resulting plot yields:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph1.png">
+</p>
+
+Additionally, the plot of the Moody's BAA-Fed Fund Spread with the DD looks like:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph2.png">
+</p>
+
+Lastly, we can compare our calculations to the Cleveland Financial Stress Index, we obtain the result:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/6graph3.png">
+</p>
+
+Interestingly, we see a strong correlation between the distance to default (DD), the probability of default (PD), and current economic conditions, confirming the expected result firms are more likely to default in difficult economic times.
