@@ -51,7 +51,7 @@ Here,
 - <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc4.png"> represents the volatility of the firm's market capitalization E over the past year.
 - <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc3.png"> represents the volatility of the firm's assets over the past year using the naive method.
 
-Now, from these calculations, and according to the Black-Sholes theory we can calculate the PD as 
+Now, from these calculations, and according to the Black-Scholes theory we can calculate the PD as 
 
 <p align="center">
   <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/2calc5.png">
