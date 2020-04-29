@@ -29,7 +29,7 @@ f. Cleveland Financial Stress Index : This dataset is similarly a gauge of the f
 
 In actually scraping and extracting the data, the SAS Software was used in order to prepare the data. SAS was necessary in order to deal with the sheer size of the DSF and FUNDA dataset would make it infeasable for direct analysis in the R Statistical Package.
 
-### Calculating the DD and the PD with the Naive Method
+### 2. Calculating the DD and the PD with the Naive Method
 
 The naive method calculates the distance to default (DD) as:
 
@@ -40,7 +40,7 @@ The naive method calculates the distance to default (DD) as:
 where
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc2.png">
+  <img height='70' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc2.png">
 </p>
 
 Here,
@@ -74,18 +74,18 @@ We can compute the descriptive statistics over the entire sample period for the 
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc6.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc7.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
 
-### Calculating the DD and the PD with the Direct Method
+### 3. Calculating the DD and the PD with the Direct Method
 
 The direct method calculates the distance to default (DD) by treating the market capitalization E as an option on the firm's assets with strike price F, the company's debt. In the Black-Scholes theory, this equation is given by:
 
@@ -102,7 +102,7 @@ where
 and 
 
 <p align="center">
-  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc4.png">
+  <img height='50' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc4.png">
 </p>
 
 Here,
@@ -145,18 +145,18 @@ Using the same range of data as in the naive method, for the direct method, we c
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc8.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc8.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
 
-### Calculating the DD and the PD with the Indirect Method
+### 4. Calculating the DD and the PD with the Indirect Method
 
 Both of the previous methods, the naive method and the direct method, calculate the volatility by directly solving for it. This method takes a different approach: 
 
@@ -196,7 +196,7 @@ with the standard deviation given by:
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
 
-### Comparison of the Methods
+### 5. Comparison of the Methods
 
 At this point, we can compare all three methods, by looking at the correlation across the mean DD value throughout the years. This correlation for DD is given in the following table:
 
@@ -211,7 +211,7 @@ Graphically, this correlation is represented by:
   <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
 </p>
 
-### Comparison with Financial Stress Indices
+### 6. Comparison with Financial Stress Indices
 
 For the rest of this analsis, the distance to default will be calculated by the mean value for each year using the direct method. This DD will will be compared to financial stress indices.
 
