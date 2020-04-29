@@ -166,7 +166,7 @@ Both of the previous methods, the naive method and the direct method, calculate 
 
 - Third, estimate the volatility of these daily values of the firm's assets.
 
-- Repeat with the new value of the firm's volatility until <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png"> converges.
+- Repeat with the new value of the firm's volatility until <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png"> converges.
 
 Thus, we can calculate V, the firm's assets, and <img height='15' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc6.png">, the volatility of the firm's assets, for every year for every firm sampled.
 
@@ -185,13 +185,13 @@ Using the same range of data as in the naive and direct method, for the indirect
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc7.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/4graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc8.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/4graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
@@ -204,6 +204,12 @@ At this point, we can compare all three methods, by looking at the correlation a
 | Naive Method	| 0.10961 |	0.12776 | 1.000 |
 | Direct Method	| 0.10961 |	0.12776 |
 | Indirect Method	| 0.10961 |	0.12776 |
+
+Graphically, this correlation is represented by:
+
+<p align="center">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/5graph1.png">
+</p>
 
 ### Comparison with Financial Stress Indices
 
