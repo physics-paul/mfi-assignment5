@@ -90,7 +90,7 @@ The calculation was completed in the R Markdown file 'defaultCalculation.r' unde
 The direct method calculates the distance to default (DD) by treating the market capitalization E as an option on the firm's assets with strike price F, the company's debt. In the Black-Scholes theory, this equation is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc1.png">
+  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc1.png">
 </p>
 
 where
@@ -102,7 +102,7 @@ where
 and 
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc4.png">
+  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/3calc4.png">
 </p>
 
 Here,
