@@ -74,13 +74,13 @@ We can compute the descriptive statistics over the entire sample period for the 
 Additionally, we can compare the descriptive statistics across time. However, in many occurrences the debt of a firm is zero, making the distance to default effectively zero and throwing off the descriptive statistics for distance to default. Thus, it is more convenient to plot the PD instead. The mean, 25th, 50th, and 75th percentiles for PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph1.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph2.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
@@ -142,16 +142,16 @@ Using the same range of data as in the naive method, for the direct method, we c
 | Minimum	| 0.10961 |	0.12776 |
 | Maximum	| 0.10961 |	0.12776 |
 
-Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
+Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph1.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph2.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
@@ -182,33 +182,33 @@ Using the same range of data as in the naive and direct method, for the indirect
 | Minimum	| 0.10961 |	0.12776 |
 | Maximum	| 0.10961 |	0.12776 |
 
-Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
+Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the PD and across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph1.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph2.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
 
 ### 5. Comparison of the Methods
 
-At this point, we can compare all three methods, by looking at the correlation across the mean DD value throughout the years. This correlation for DD is given in the following table:
+At this point, we can compare all three methods, by looking at the correlation across the mean DD value throughout the years. This correlation for the mean of the probability to default, PD, is given in the following table:
 
 | --- | Naive Method | Direct Method | Indirect Method |
-| Naive Method	| 0.10961 |	0.12776 | 1.000 |
-| Direct Method	| 0.10961 |	0.12776 |
-| Indirect Method	| 0.10961 |	0.12776 |
+| Naive Method	| 1.000 |	0.815 | 0.673 |
+| Direct Method	| 0.815 |	1.000 | 0.763 |
+| Indirect Method	| 0.673 |	0.763 | 1.000 |
 
-Graphically, this correlation is represented by:
+Graphically, we can represent this correlation by looking at the mean of the methods across time:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
+  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
 </p>
 
 ### 6. Comparison with Financial Stress Indices
