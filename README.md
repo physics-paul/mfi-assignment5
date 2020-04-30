@@ -71,16 +71,16 @@ We can compute the descriptive statistics over the entire sample period for the 
 | Minimum	| 0.10961 |	0.12776 |
 | Maximum	| 0.10961 |	0.12776 |
 
-Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
+Additionally, we can compare the descriptive statistics across time. However, in many occurrences the debt of a firm is zero, making the distance to default effectively zero and throwing off the descriptive statistics for distance to default. Thus, it is more convenient to plot the PD instead. The mean, 25th, 50th, and 75th percentiles for PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc6.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc7.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
@@ -145,13 +145,13 @@ Using the same range of data as in the naive method, for the direct method, we c
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the DD and PD across time is given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc8.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc8.png">
+  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
