@@ -34,7 +34,7 @@ In actually scraping and extracting the data, the SAS Software was used in order
 The naive method calculates the distance to default (DD) as:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc1.png">
+  <img height='70' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc1.png">
 </p>
 
 where
@@ -54,7 +54,7 @@ Here,
 Now, from these calculations, and according to the Black-Scholes theory we can calculate the PD as 
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
+  <img height='70' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2calc5.png">
 </p>
 
 In order to calculate these values over the range from 1970-2015, 200 firms were randomly selected from each year. This was done in an effort to lower the computational strain while still capturing the essence of the calculations.
@@ -62,25 +62,25 @@ In order to calculate these values over the range from 1970-2015, 200 firms were
 We can compute the descriptive statistics over the entire sample period for the DD and PD given by:
 
 | --- | Distance to Default (DD) | Probability of Default (PD) | 
-| Number of Observations	| 0.10961 |	0.12776 |
-| Mean	| 0.10961 |	0.12776 |
-| 25th Percentile	| 0.10961 |	0.12776 |
-| 50th Percentile	| 0.10961 |	0.12776 |
-| 75th Percentile	| 0.10961 |	0.12776 |
-| Standard Deviation	| 0.10961 |	0.12776 |
-| Minimum	| 0.10961 |	0.12776 |
-| Maximum	| 0.10961 |	0.12776 |
+| Number of Observations	| 9195 |	9195 |
+| Minimum	| -4.691 |	0.000 |
+| 25th Percentile	| 5.082 |	0.000 |
+| 50th Percentile	| 8.775 |	0.000 |
+| Mean	| inf |	0.0109 |
+| 75th Percentile	| 14.562 |	0.000 |
+| Maximum	| inf |	0.999 |
+| Standard Deviation	| N/A |	0.0589 |
 
 Additionally, we can compare the descriptive statistics across time. However, in many occurrences the debt of a firm is zero, making the distance to default effectively zero and throwing off the descriptive statistics for distance to default. Thus, it is more convenient to plot the PD instead. The mean, 25th, 50th, and 75th percentiles for PD across time is given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph1.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph2.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/2graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Naive Sentiment Analysis' header.
@@ -90,7 +90,7 @@ The calculation was completed in the R Markdown file 'defaultCalculation.r' unde
 The direct method calculates the distance to default (DD) by treating the market capitalization E as an option on the firm's assets with strike price F, the company's debt. In the Black-Scholes theory, this equation is given by:
 
 <p align="center">
-  <img height='60' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc1.png">
+  <img height='50' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc1.png">
 </p>
 
 where
@@ -102,7 +102,7 @@ where
 and 
 
 <p align="center">
-  <img height='50' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc4.png">
+  <img height='40' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3calc4.png">
 </p>
 
 Here,
@@ -133,25 +133,25 @@ To highlight, we don't know V, the firm's assets, and <img height='15' src="http
 Using the same range of data as in the naive method, for the direct method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
 
 | --- | Distance to Default (DD) | Probability of Default (PD) | 
-| Number of Observations	| 0.10961 |	0.12776 |
-| Mean	| 0.10961 |	0.12776 |
-| 25th Percentile	| 0.10961 |	0.12776 |
-| 50th Percentile	| 0.10961 |	0.12776 |
-| 75th Percentile	| 0.10961 |	0.12776 |
-| Standard Deviation	| 0.10961 |	0.12776 |
-| Minimum	| 0.10961 |	0.12776 |
-| Maximum	| 0.10961 |	0.12776 |
+| Number of Observations	| 9195 |	9195 |
+| Minimum	| -5.728 |	0.000 |
+| 25th Percentile	| 3.073 |	0.000 |
+| 50th Percentile	| 5.565 |	0.000 |
+| Mean	| inf |	0.0262 |
+| 75th Percentile	| 10.245 |	0.001 |
+| Maximum	| inf |	0.999 |
+| Standard Deviation	| N/A |	0.101 |
 
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the PD across time is given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph1.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph2.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/3graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Direct Sentiment Analysis' header.
@@ -172,26 +172,27 @@ Thus, we can calculate V, the firm's assets, and <img height='15' src="https://r
 
 Using the same range of data as in the naive and direct method, for the indirect method, we can compute the descriptive statistics over the entire sample period for the DD and PD given by:
 
+
 | --- | Distance to Default (DD) | Probability of Default (PD) | 
-| Number of Observations	| 0.10961 |	0.12776 |
-| Mean	| 0.10961 |	0.12776 |
-| 25th Percentile	| 0.10961 |	0.12776 |
-| 50th Percentile	| 0.10961 |	0.12776 |
-| 75th Percentile	| 0.10961 |	0.12776 |
-| Standard Deviation	| 0.10961 |	0.12776 |
-| Minimum	| 0.10961 |	0.12776 |
-| Maximum	| 0.10961 |	0.12776 |
+| Number of Observations	| 9195 |	9195 |
+| Minimum	| -10.414 |	0.000 |
+| 25th Percentile	| 5.726 |	0.000 |
+| 50th Percentile	| 13.501 |	0.000 |
+| Mean	| inf |	0.0332 |
+| 75th Percentile	| 31.306 |	0.001 |
+| Maximum	| inf |	0.999 |
+| Standard Deviation	| N/A |	0.135 |
 
 Additionally, we can compare the descriptive statistics across time. The mean, 25th, 50th, and 75th percentiles for the PD and across time is given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph1.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph1.png">
 </p>
 
 with the standard deviation given by:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph2.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/4graph2.png">
 </p>
 
 The calculation was completed in the R Markdown file 'defaultCalculation.r' under the section 'Indirect Sentiment Analysis' header.
@@ -218,19 +219,19 @@ For the rest of this analsis, the distance to default will be calculated by the 
 When comparing the NBER Recession data with the calculation of the DD, the resulting plot yields:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph1.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph1.png">
 </p>
 
 Additionally, the plot of the Moody's BAA-Fed Fund Spread with the DD looks like:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph2.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph2.png">
 </p>
 
 Lastly, we can compare our calculations to the Cleveland Financial Stress Index, we obtain the result:
 
 <p align="center">
-  <img height='80' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph3.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/6graph3.png">
 </p>
 
 Interestingly, we see a strong correlation between the distance to default (DD), the probability of default (PD), and current economic conditions, confirming the expected result firms are more likely to default in difficult economic times.
