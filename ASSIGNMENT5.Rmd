@@ -1,0 +1,523 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# 5.0 import modules
+
+```{r import modules, message = FALSE, warning = FALSE}
+
+library(tseries)
+library(readr)
+library(dplyr)
+library(tidyverse) 
+library(timetk)
+library(highcharter)
+library(ggplot2)
+library(readxl)
+library(corrr)
+library(scales)
+library(plotly)
+library(lubridate)
+library(janitor)
+library(tidyverse)
+library(plotly)
+library(tidyquant)
+library(here)
+library(DataExplorer)
+library(rootSolve)
+```
+
+# 5.1 get imported data
+
+```{r import data}
+
+dsfFunda <- read_csv("dsf_funda.csv")
+
+dsfFunda <- dsfFunda %>%
+  clean_names() %>%
+  drop_na()
+
+```
+
+# 5.2 naive method
+
+```{r import variables}
+
+T <- 1
+years <- dsfFunda[1]
+rLast <- dsfFunda[3]
+sigmaE <- dsfFunda[4]
+E <- dsfFunda[5]
+F <- dsfFunda[6]
+
+```
+
+```{r calculate DD and PD using the Naive Method}
+
+# calcualte dd and pd
+
+sigmaV <- E / (E + F) * sigmaE + F / (E + F) * (0.05 + 0.25*sigmaE)
+
+ddNaive <- (log((E + F) / F) + (rLast - sigmaV^2 / 2) * T) / (sigmaV*sqrt(T))
+
+pdNaive <- 1 - pnorm(ddNaive[,1])
+
+# bind this to the year to get descriptive statistics
+
+ddNaive <- cbind(years,ddNaive)
+pdNaive <- cbind(years,pdNaive)
+
+# rename the columns
+
+names(ddNaive)[2] = 'ddnaive'
+names(pdNaive)[2] = 'pdnaive'
+
+# combine to get the descriptive statistics for each year
+
+ddSummaryNaive <- ddNaive %>% group_by(year) %>%
+  summarise(
+    avg = mean(ddnaive),
+    min = min(ddnaive),
+    max = max(ddnaive),
+    SD = sd(ddnaive),
+    q25 = quantile(ddnaive,0.25),
+    q50 = quantile(ddnaive,0.50),
+    q75 = quantile(ddnaive,0.75))
+
+pdSummaryNaive <- pdNaive %>% group_by(year) %>%
+  summarise(
+    avg = mean(pdnaive),
+    min = min(pdnaive),
+    max = max(pdnaive),
+    SD = sd(pdnaive),
+    q25 = quantile(pdnaive,0.25),
+    q50 = quantile(pdnaive,0.50),
+    q75 = quantile(pdnaive,0.75))
+
+ggplot(pdSummaryNaive) + geom_line(aes(x=year,y=avg, color='avg')) + 
+  geom_line(aes(x=year,y=q25, color='q25')) +
+  geom_line(aes(x=year,y=q50, color='q50')) +
+  geom_line(aes(x=year,y=q75, color='q75')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+ggplot(pdSummaryNaive) + geom_line(aes(x=year,y=SD, color='std')) + xlab('Year') + ylab('Standard Deviation of PD')
+```
+
+# 5.3 direct method
+
+```{r import variables}
+
+T = 1
+years <- dsfFunda[1]
+rLast <- dsfFunda[3]
+sigmaE <- dsfFunda[4]
+E <- dsfFunda[5]
+F <- dsfFunda[6]
+
+```
+
+
+```{r import risk-free rate}
+
+# grab the risk-free rate
+
+riskFreeRate <- read_csv("DAILYFED.csv", na = ".")
+
+riskFreeRate <- riskFreeRate %>%
+  clean_names() %>%
+  drop_na() %>%
+  mutate(
+    r = log(1+dtb3/100),
+    year = year(date)
+  )
+  
+riskFreeRate <- riskFreeRate[3:4] 
+
+riskFreeRate <- riskFreeRate %>% group_by(year) %>% summarize(r = first(r))
+
+# merge the risk-free rate with the dsf dataset
+
+dsfFundaWithRiskFree <- merge(dsfFunda, riskFreeRate)
+
+# create the risk-free variable
+
+R <- dsfFundaWithRiskFree[7]
+
+```
+
+```{r calculate V and sigmaV using the Direct Method}
+
+# create a function to calculae v and sigmav
+
+fn <- function(x, parms) {
+  
+  r <- as.numeric(parms[1])
+  f <- as.numeric(parms[2])
+  t <- as.numeric(parms[3])
+  e <- as.numeric(parms[4])
+  sigmae <- as.numeric(parms[5])
+  
+  v <- as.numeric(x[1])
+  sigmav <- as.numeric(x[2])
+  
+  d1 <- (log(v/f) + (r + sigmav^2 / 2) * t) / (sigmav * sqrt(t))
+  d2 <- d1 - sigmav * sqrt(t)
+  
+  s1 <- v * pnorm(d1) - f * exp(-r*t) * pnorm(d2) - e
+  s2 <- v / e * pnorm(d1) * sigmav - sigmae
+  
+  return(c(s1,s2))
+}
+
+# iterate through the list of firms for each year
+
+V = array(dim=lengths(E))
+sigmaV <- array(dim=lengths(E))
+
+for (i in 1:lengths(E)) {
+  
+  sigmae <- as.numeric(sigmaE[i,1])
+  e <- as.numeric(E[i,1])
+  f <- as.numeric(F[i,1])
+  r <- as.numeric(R[i,1])
+  
+  parms <- c(r, f, T, e, sigmae)
+
+  x0 <- c((e + f), sigmae * e /(e + f) )
+
+  (ss <- multiroot(fn, x0, parms=parms))
+
+  V[i] <- ss$root[1]
+  sigmaV[i] <- ss$root[2]
+
+}
+
+sigmaVGuess <- sigmaV
+
+```
+
+```{r calculate DD and PD using the Direct Method}
+
+# calcualte dd and pd
+
+ddDirect <- (log(V / F) + (r - sigmaV^2 / 2) * T) / (sigmaV*sqrt(T))
+
+pdDirect <- 1 - pnorm(ddDirect[,1])
+
+# bind this to the year to get descriptive statistics
+
+ddDirect <- cbind(years,ddDirect)
+pdDirect <- cbind(years,pdDirect)
+
+# rename the columns
+
+names(ddDirect)[2] = 'dddirect'
+names(pdDirect)[2] = 'pddirect'
+
+# delete and rows with 'na' values
+
+ddDirect <- ddDirect %>% drop_na()
+pdDirect <- pdDirect %>% drop_na()
+
+# combine to get the descriptive statistics for each year
+
+ddSummaryDirect <- ddDirect %>% group_by(year) %>%
+  summarise(
+    avg = mean(dddirect),
+    min = min(dddirect),
+    max = max(dddirect),
+    SD = sd(dddirect),
+    q25 = quantile(dddirect,0.25),
+    q50 = quantile(dddirect,0.50),
+    q75 = quantile(dddirect,0.75))
+
+pdSummaryDirect <- pdDirect %>% group_by(year) %>%
+  summarise(
+    avg = mean(pddirect),
+    min = min(pddirect),
+    max = max(pddirect),
+    SD = sd(pddirect),
+    q25 = quantile(pddirect,0.25),
+    q50 = quantile(pddirect,0.50),
+    q75 = quantile(pddirect,0.75))
+
+ggplot(pdSummaryDirect) + geom_line(aes(x=year,y=avg, color='avg')) + 
+  geom_line(aes(x=year,y=q25, color='q25')) +
+  geom_line(aes(x=year,y=q50, color='q50')) +
+  geom_line(aes(x=year,y=q75, color='q75')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+ggplot(pdSummaryDirect) + geom_line(aes(x=year,y=SD, color='std')) + xlab('Year') + ylab('Standard Deviation of PD')
+
+```
+
+# 5.4 indirect method
+
+```{r import daily data}
+
+dsfFundaDaily <- read_csv("dsf_funda_daily.csv")
+
+# change the year convention back to the original "true" value
+
+dsfFundaDaily <- dsfFundaDaily %>%
+  clean_names() %>%
+  drop_na() %>%
+  mutate( year = year - 1)
+
+# merge the risk-free rate with the dsf dataset
+
+dsfFundaDailyWithRiskFree <- merge(dsfFundaDaily, riskFreeRate)
+
+# create the risk-free variable
+
+R <- dsfFundaDailyWithRiskFree[8]
+
+```
+
+
+```{r import variables}
+
+T = 1
+sigmaE <- dsfFunda[4]
+E <- dsfFundaDailyWithRiskFree %>% select(year, cusip, e)
+F <- dsfFunda[6]
+
+```
+
+```{r calculate V and sigmaV using the Indirect Method}
+
+# create a function to calculae e, given a value for v and sigmav
+
+fn <- function(v, parms) {
+  
+  sigmav <- as.numeric(parms[1])
+  r <- as.numeric(parms[2])
+  f <- as.numeric(parms[3])
+  t <- as.numeric(parms[4])
+  sigmae <- as.numeric(parms[5])
+  e <- as.numeric(parms[6])
+  
+  d1 <- (log(v/f) + (r + sigmav^2 / 2) * t) / (sigmav * sqrt(t))
+  d2 <- d1 - sigmav * sqrt(t)
+  
+  s1 <- v * pnorm(d1) - f * exp(-r*t) * pnorm(d2) - e
+  
+  return(c(s1))
+}
+
+# create the v and sigmav array, to be filled by the iterative method
+
+VIterate <- array(dim=lengths(dsfFunda[1]))
+sigmaVIterate <- array(dim=lengths(dsfFunda[1]))
+
+# guess for an initial value for v to be used in the optimization
+
+V0 <- first(V[1])
+
+# grab the unique years in the dataset
+
+for (j in 1:lengths(dsfFunda[1])) {
+
+  cusipVal <- dsfFunda$cusip[j]
+  
+  # subtract a year to be consistent with the forward looking dsf data
+  
+  yearVal <- dsfFunda$year[j] - 1
+
+  # grab only the dsf data necessary for calculating v and sigmav
+
+  dsfFundaDailySpecific <- dsfFundaDailyWithRiskFree[E$year == yearVal & E$cusip == cusipVal,]
+
+  # redefine variables
+  
+  tempV <- array(dim=lengths(dsfFundaDailySpecific[1]))
+  f <- dsfFundaDailySpecific$f
+  r <- dsfFundaDailySpecific$f
+  sigmae <- dsfFundaDailySpecific$stdev
+  e <- dsfFundaDailySpecific$e
+
+  # take a guess at the value for sigma
+  
+  sigmaV0 <- sigmaVGuess[j]
+
+  # run the optimization procedure in order to obtain sigmav
+  
+  k <- 0
+  
+  converged = 'False'
+  
+  while (converged == 'False') {
+  
+    for (i in 1:lengths(dsfFundaDailySpecific[1])) {
+  
+      parms <- c(sigmaV0, r[i], f[i], T, sigmae[i], e[i])
+  
+      ss <- multiroot(fn, abs(V[j]), parms=parms)
+  
+      tempV[i] <- ss$root
+  
+    }
+  
+    sigmaV <- sd(log(tempV))
+  
+    if (abs(sigmaV - sigmaV0) < 10^-5 || k >= 10) {
+    
+      converged <- 'True'
+    }
+
+    sigmaV0 <- as.numeric(sigmaV)
+
+    k <= k + 1
+  
+  }
+  
+  # store the value for sigma in an array
+  
+  sigmaVIterate[j] = sigmaV0
+  
+  # calculate the value for v given by parameters in the annual data
+  
+  r <- dsfFundaWithRiskFree[j,7]
+  f <- dsfFundaWithRiskFree[j,6]
+  e <- dsfFundaWithRiskFree[j,5]
+  sigmae <- dsfFundaWithRiskFree[j,4]
+  
+  parms <- c(sigmaV0, r, f, T, sigmae, e)
+  
+  ss <- multiroot(fn, abs(V[j]), parms=parms)
+  
+  VIterate[j] <- ss$root
+  
+}
+
+# after the iterations are performed, the data which is kept is VIterate and sigmaVIterate
+
+```
+
+```{r calculate DD and PD using the Indirect Method}
+
+# calcualte dd and pd
+
+ddIndirect <- (log(VIterate / F) + (r - sigmaVIterate^2 / 2) * T) / (sigmaVIterate*sqrt(T))
+
+pdIndirect <- 1 - pnorm(ddIndirect[,1])
+
+# bind this to the year to get descriptive statistics
+
+ddIndirect <- cbind(years,ddIndirect)
+pdIndirect <- cbind(years,pdIndirect)
+
+# rename the columns
+
+names(ddIndirect)[2] = 'ddindirect'
+names(pdIndirect)[2] = 'pdindirect'
+
+# delete and rows with 'na' values
+
+ddIndirect <- ddIndirect %>% drop_na()
+pdIndirect <- pdIndirect %>% drop_na()
+
+# combine to get the descriptive statistics for each year
+
+ddSummaryIndirect <- ddIndirect %>% group_by(year) %>%
+  summarise(
+    avg = mean(ddindirect),
+    min = min(ddindirect),
+    max = max(ddindirect),
+    SD = sd(ddindirect),
+    q25 = quantile(ddindirect,0.25),
+    q50 = quantile(ddindirect,0.50),
+    q75 = quantile(ddindirect,0.75))
+
+pdSummaryIndirect <- pdIndirect %>% group_by(year) %>%
+  summarise(
+    avg = mean(pdindirect),
+    min = min(pdindirect),
+    max = max(pdindirect),
+    SD = sd(pdindirect),
+    q25 = quantile(pdindirect,0.25),
+    q50 = quantile(pdindirect,0.50),
+    q75 = quantile(pdindirect,0.75))
+
+ggplot(pdSummaryIndirect) + geom_line(aes(x=year,y=avg, color='avg')) + 
+  geom_line(aes(x=year,y=q25, color='q25')) +
+  geom_line(aes(x=year,y=q50, color='q50')) +
+  geom_line(aes(x=year,y=q75, color='q75')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+ggplot(pdSummaryIndirect) + geom_line(aes(x=year,y=SD, color='std')) + xlab('Year') + ylab('Standard Deviation of PD')
+
+```
+
+# 5.5 comparison of the methods
+
+```{r calculation of the correlation matrix among methods for pd}
+
+allMethods <- cbind(pdSummaryNaive[,1:2], pdSummaryDirect[,2], pdSummaryIndirect[,2])
+
+allMethods <- allMethods %>% clean_names()
+
+allMethodsCorrelation <- allMethods %>% select(2,3,4)
+
+cor(allMethodsCorrelation)
+
+```
+
+```{r plot of methods across time}
+
+ggplot(allMethods) + geom_line(aes(x=year,y=avg, color='naive')) + 
+  geom_line(aes(x=year,y=avg_2, color='direct')) +
+  geom_line(aes(x=year,y=avg_3, color='indirect')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+
+```
+
+# 5.6 comparison with financial stress indices
+
+```{r import of the nber financial stress index}
+
+NBER = read_csv('NBERRECESSION.csv') %>% mutate(year = year(DATE)) %>%
+  select(year,USREC) %>%
+  group_by(year) %>% 
+  summarize(usrec = max(USREC))
+
+# gather descriptive statistics for nber datafile and probabiliy to default.
+
+nberMerge <- merge(NBER,pdSummaryDirect[,1:2])
+
+ggplot(nberMerge) + geom_line(aes(x=year,y=usrec, color='nber')) + 
+  geom_line(aes(x=year,y=avg, color='direct')) + xlab('Year') + ylab('Probability of Default (PD)') + ylim(0,1.0)
+
+```
+
+```{r import of the moodys baa fed fund spread}
+
+baaffm <- read.csv("BAAFFM.csv") %>%
+  mutate(year = year(DATE)) %>%
+  select(year,BAAFFM) %>%
+  group_by(year) %>% 
+  summarize(baaffm = last(BAAFFM))
+
+# gather descriptive statistics for nber datafile and probabiliy to default.
+
+baaffmMerge <- merge(baaffm,pdSummaryDirect[,1:2])
+
+ggplot(baaffmMerge) + geom_line(aes(x=year,y=0.01*baaffm, color='baaffm (bp / 100)')) +
+  geom_line(aes(x=year,y=avg, color='direct')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+```
+
+```{r import of the cleveland stress index}
+
+cfsi <- read.csv("CFSI.csv") %>%
+  mutate(year = year(DATE)) %>%
+  select(year,CFSI) %>%
+  group_by(year) %>% 
+  summarize(cfsi = last(CFSI))
+
+# gather descriptive statistics for nber datafile and probabiliy to default.
+
+cfsiMerge <- merge(cfsi,pdSummaryDirect[,1:2])
+
+ggplot(cfsiMerge) + geom_line(aes(x=year,y=0.05*cfsi, color='cfsi (bp / 100)')) +
+  geom_line(aes(x=year,y=avg, color='direct')) + xlab('Year') + ylab('Probability of Default (PD)')
+
+```
