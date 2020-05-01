@@ -209,7 +209,7 @@ At this point, we can compare all three methods, by looking at the correlation a
 Graphically, we can represent this correlation by looking at the mean of the methods across time:
 
 <p align="center">
-  <img height='200' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
+  <img height='400' src="https://raw.githubusercontent.com/physics-paul/mfi-assignment5/master/images/5graph1.png">
 </p>
 
 ### 6. Comparison with Financial Stress Indices
